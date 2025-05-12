@@ -1,4 +1,4 @@
-package main;
+
 
 import controlador.TableroControlador;
 import modelo.Tablero;

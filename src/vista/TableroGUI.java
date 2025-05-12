@@ -3,6 +3,7 @@ package vista;
 import controlador.TableroControlador;
 import modelo.Tablero;
 
+import java.awt.MediaTracker;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -120,9 +121,24 @@ public class TableroGUI extends JFrame {
 
                 // Mostrar reina si hay una en la casilla
                 if (tablero.hayReina(i, j)) {
-                    casillas[i][j].setText("♕");
-                    casillas[i][j].setFont(new Font("Arial", Font.BOLD, 24));
+                    ImageIcon originalIcon = new ImageIcon(getClass().getResource("/queen.png"));
+                    if (originalIcon.getImageLoadStatus() != MediaTracker.COMPLETE) {
+                        // Si no hay imagen, usar texto como respaldo
+                        casillas[i][j].setText("♕");
+                        casillas[i][j].setFont(new Font("Arial", Font.BOLD, 24));
+                        casillas[i][j].setIcon(null);
+                    } else {
+                        // Redimensionar la imagen para que se ajuste a la casilla
+                        Image img = originalIcon.getImage();
+                        // El tamaño de las casillas es 60x60, usar un tamaño ligeramente menor
+                        Image resizedImg = img.getScaledInstance(45, 45, Image.SCALE_SMOOTH);
+                        ImageIcon resizedIcon = new ImageIcon(resizedImg);
+
+                        casillas[i][j].setIcon(resizedIcon);
+                        casillas[i][j].setText("");
+                    }
                 } else {
+                    casillas[i][j].setIcon(null);
                     casillas[i][j].setText("");
                 }
             }
